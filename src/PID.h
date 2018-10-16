@@ -18,6 +18,12 @@ public:
   double Kd;
 
   /*
+  * Twiddle
+  */
+  float tolerance;
+  double delta_p;
+
+  /*
   * Constructor
   */
   PID();
@@ -30,7 +36,7 @@ public:
   /*
   * Initialize PID.
   */
-  void Init(double Kp, double Ki, double Kd);
+  void Init(double Kp, double Ki, double Kd, bool run_twiddle);
 
   /*
   * Update the PID error variables given cross track error.
@@ -41,6 +47,16 @@ public:
   * Calculate the total PID error.
   */
   double TotalError();
+
+  /*
+  * Used to reset the simulator and bring the car back to first position.
+  */
+  void Restart(uWS::WebSocket<uWS::SERVER> ws);
+
+  /*
+  * Twiddle or vanilla gradient descent for tuning one hyper parameter at a time
+  */
+  void Twiddle(double total_error, double hyperparameter);
 };
 
 #endif /* PID_H */
